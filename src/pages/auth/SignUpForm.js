@@ -24,9 +24,9 @@ const SignUpForm = () => {
   });
   const { username, password1, password2 } = signUpData;
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({}); /*error hook where all errors are stored */
 
-  const history = useHistory();
+  const history = useHistory(); /*Use to redirect user after registration sucess*/
 
   const handleChange = (event) => {
     setSignUpData({
@@ -36,12 +36,17 @@ const SignUpForm = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); /*so the page does not refresh*/ 
     try {
       await axios.post("/dj-rest-auth/registration/", signUpData);
-      history.push("/signin");
+      history.push("/signin"); /*this is where we want to go next, so sign in*/ 
     } catch (err) {
       setErrors(err.response?.data);
+      /* Back in the catch block, we’ll set  the errors to err.response?.data.
+        This code with the question mark is called  optional chaining. What it does is check if  
+        response is defined before looking for the data.  So if response isn’t defined, it won’t throw an error.
+        https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
+        */
     }
   };
 
@@ -67,6 +72,13 @@ const SignUpForm = () => {
               <Alert variant="warning" key={idx}>
                 {message}
               </Alert>
+              /* Alert bootstrap component to display any  error messages.
+                What we’ll have to do is map over the array  of errors for each key in the error state. 
+                To do this we’ll use conditional chaining  again to check if the username key is in the  
+                errors object, and if so, then produce our Alerts.  We’ll use that dropdown trick again to import this  
+                Alert component as we use it. We’ll give our Alert  a variant of warning so react-bootstrap will give  
+                it a yellow color. And we’ll add a key set to index.  Inside our alert, we’ll render the error message.
+                */
             ))}
 
             <Form.Group controlId="password1">
@@ -113,6 +125,11 @@ const SignUpForm = () => {
               <Alert key={idx} variant="warning" className="mt-3">
                 {message}
               </Alert>
+              /* The last piece of feedback we have to add is  for the so-called non-field-errors, such as when  
+                the passwords don’t match. So under the submit  button, I’ll add the Alerts for non_field_errors.  
+                I’ll include the mt-3 bootstrap  class to add some margin.
+                Now if our passwords don’t match, we can  see the error show up in the preview.  
+                */
             ))}
           </Form>
         </Container>
