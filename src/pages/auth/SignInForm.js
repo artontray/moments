@@ -17,8 +17,8 @@ import appStyles from "../../App.module.css";
 import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 
 function SignInForm() {
-  const setCurrentUser = useSetCurrentUser();
-
+  /*const setCurrentUser = useSetCurrentUser();*/
+  const setCurrentUser = useContext(SetCurrentUserContext);
   const [signInData, setSignInData] = useState({
     username: "",
     password: "",
