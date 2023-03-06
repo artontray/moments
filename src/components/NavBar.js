@@ -1,28 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
 import { NavLink } from "react-router-dom";
-import { CurrentUserContext } from "../App";
+import { useCurrentUser } from "../contexts/CurrentUserContext";
 
 const NavBar = () => {
-  const currentUser = useContext(CurrentUserContext);
-/* 
-Inside, I’ll create the currentUser  variable and call the useContext hook  
-with our CurrentUserContext. As you can  see, both have been automatically imported.  
-Hopefully you’re getting used  to using that shortcut as well.
-To tidy up our JSX, we’ll create a variable  for the icons our logged out users can see,  
-and another for the icons  our logged in users will see.  
+  const currentUser = useCurrentUser();
 
-*/
   const loggedInIcons = <>{currentUser?.username}</>;
   const loggedOutIcons = (
     <>
-    {/*
-    However, we don’t want to wrap these NavLinks  in a div, as that will mess with our CSS.  
-Instead we can use a JSX fragment, which is an  empty element. When this renders in the browser,  
-we’ll just get our navigation links, and  no wrapper element will appear in the HTML.
-    */} 
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}

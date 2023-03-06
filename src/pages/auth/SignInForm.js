@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import Form from "react-bootstrap/Form";
@@ -14,18 +14,10 @@ import { Link, useHistory } from "react-router-dom";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-import { SetCurrentUserContext } from "../../App";
+import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 
 function SignInForm() {
-  const setCurrentUser = useContext(SetCurrentUserContext);
-
-/*
-In SignInForm.js, we’ll access the setCurrentUser  function to update user data upon successful sign in,
-so that we can show different icons in the  NavBar depending on the users logged in state.
-We’ll go to our signin form and make use of the  setCurrentUser function we created in App.js.
-I’ll create a variable called setCurrentUser  and call the useContext hook with the  
-SetCurrentUserContext. 
-*/
+  const setCurrentUser = useSetCurrentUser();
 
   const [signInData, setSignInData] = useState({
     username: "",
@@ -42,13 +34,6 @@ SetCurrentUserContext.
     try {
       const { data } = await axios.post("/dj-rest-auth/login/", signInData);
       setCurrentUser(data.user);
-      /*
-      Now that we have access to the setter function,  let’s save the data returned from the sign in  
-request into a variable, and now call it in the  handleSubmit with user data returned from the API.
-Ok, that’s great, we can set the currentUser  value. Now we have to access it in the NavBar component.
-Inside, I’ll create the currentUser  variable and call the useContext hook  
-with our CurrentUserContext. 
-      */
       history.push("/");
     } catch (err) {
       setErrors(err.response?.data);
